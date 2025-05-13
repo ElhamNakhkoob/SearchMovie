@@ -8,6 +8,7 @@ async function fetchMovies() {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
     const data = await response.json();
+    renderMovies(data.results);
     setupSearch(data.results);
   } catch (error) {
     console.error("Error fetching popular movies:", error);
