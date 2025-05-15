@@ -63,7 +63,7 @@ function renderMovies(movies) {
   });
 }
 
-const favMovies = JSON.parse(localStorage.getItem("favMvoiesList")) || [];
+const favMovies = JSON.parse(localStorage.getItem("favMoviesList")) || [];
 
 function addToFavorite(movie) {
   const isAlreadyExisting = favMovies.some((mov) => mov.id === movie.id);
@@ -77,7 +77,7 @@ function addToFavorite(movie) {
 }
 
 function saveToStorage() {
-  localStorage.setItem("favMvoiesList", JSON.stringify(favMovies));
+  localStorage.setItem("favMoviesList", JSON.stringify(favMovies));
 }
 
 fetchMovies();
