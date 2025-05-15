@@ -22,7 +22,7 @@ function setupSearch(movies) {
     const searchTerm = event.target.value.toLowerCase();
 
     if (searchTerm === "") {
-      renderMovies([]);
+      renderMovies(movies);
       return;
     }
 
@@ -47,13 +47,15 @@ function renderMovies(movies) {
         movie.poster_path
       }" alt="${movie.title}" />
       <h2 class="mt-2 text-lg font-semibold">${movie.title}</h2>
-      <p class="text-sm text-gray-600">${movie.overview.substring(0, 100)}...</p>
+      <p class="text-sm text-gray-600">${movie.overview.substring(
+        0,
+        100
+      )}...</p>
       <button class="mt-2 bg-gray-500 text-white px-3 py-1 rounded hover:bg-blue-600 add-fav-btn">
         Add to Favorites
       </button>
     `;
 
-    
     const favButton = movieCard.querySelector(".add-fav-btn");
     favButton.addEventListener("click", () => addToFavorite(movie));
 
@@ -61,11 +63,11 @@ function renderMovies(movies) {
   });
 }
 
-const favMovies = JSON.parse(localStorage.getItem('favMvoiesList')) || [];
+const favMovies = JSON.parse(localStorage.getItem("favMvoiesList")) || [];
 
-function addToFavorite(movie){
+function addToFavorite(movie) {
   const isAlreadyExisting = favMovies.some((mov) => mov.id === movie.id);
-  if (!isAlreadyExisting){
+  if (!isAlreadyExisting) {
     favMovies.unshift(movie);
     saveToStorage();
     alert(`${movie.title} added to favorites.`);
@@ -74,10 +76,8 @@ function addToFavorite(movie){
   }
 }
 
-function saveToStorage(){
-  localStorage.setItem('favMvoiesList', JSON.stringify(favMovies));
+function saveToStorage() {
+  localStorage.setItem("favMvoiesList", JSON.stringify(favMovies));
 }
-
-
 
 fetchMovies();
