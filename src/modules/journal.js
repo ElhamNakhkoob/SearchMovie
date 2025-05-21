@@ -1,4 +1,4 @@
-const favMovies = JSON.parse(localStorage.getItem("favMoviesList")) || [];
+import { favMovies, saveToStorage } from "./storage.js";
 
 function renderFavMovies() {
   const favMoviesElement = document.getElementById("favMovies");
@@ -6,41 +6,19 @@ function renderFavMovies() {
 
   favMovies.forEach((movie) => {
     const movieCard = document.createElement("div");
-    movieCard.classList.add("bg-white", "rounded-lg", "shadow-md", "p-4");
+    movieCard.className = "bg-white rounded-lg shadow-md p-4";
     movieCard.innerHTML = `
-    <img class="w-full h-[300px] object-cover rounded" src="https://image.tmdb.org/t/p/w500/${
-      movie.poster_path
-    }" 
-    alt="${movie.title}"/>
-    <h2 class="mt-2 text-lg font-semibold">${
-      movie.title.charAt(0).toUpperCase() + movie.title.slice(1)
-    }</h2>
-    <p class="text-gray-500 text-md">${movie.overview.substring(0, 100)}..</p>
-    <input placeholder = "Enter personal note"/>
+      <img class="w-full h-[300px] object-cover rounded" src="https://image.tmdb.org/t/p/w500/${movie.poster_path}" alt="${movie.title}" />
+      <h2 class="mt-2 text-lg font-semibold">${movie.title}</h2>
+      <p class="text-gray-500 text-md">${movie.overview.substring(0, 100)}..</p>
     `;
-    addNotesToCards(movieCard, movie);
+
+    addNotesToCard(movieCard, movie);
     favMoviesElement.appendChild(movieCard);
   });
 }
 
-function addToFavorite(movie) {
-  const isAlreadyExisting = favMovies.some((mov) => mov.title === movie.title);
-  if (!isAlreadyExisting) {
-    favMovies.unshift(movie);
-    saveToStorage();
-    alert(`${movie.title} is added to Favorite list`);
-  } else alert(`${movie.title} is already exists to Favorite list`);
-}
-
-const saveToLocalStorage = (updatedNotes) => {
-  try {
-    localStorage.setItem("favMoviesList", JSON.stringify(updatedNotes));
-  } catch (error) {
-    console.error("Error while saving to localStorage", error);
-  }
-};
-
-const addNotesToCards = (card, movie) => {
+function addNotesToCard(card, movie) {
   const noteLabel = document.createElement("p");
   noteLabel.textContent = "Personal Note:";
   noteLabel.className = "mt-2 text-sm font-medium";
@@ -86,27 +64,25 @@ const addNotesToCards = (card, movie) => {
       const movieToUpdate = updatedNotes.find((m) => m.id === movie.id);
       if (movieToUpdate) {
         movieToUpdate.note = noteText;
-        saveToLocalStorage(updatedNotes);
+        saveToStorage(updatedNotes);
         setBtnToDelete();
       }
     } else if (action === "delete") {
       const movieToUpdate = updatedNotes.find((m) => m.id === movie.id);
       if (movieToUpdate) {
         movieToUpdate.note = "";
-        saveToLocalStorage(updatedNotes);
+        saveToStorage(updatedNotes);
         noteInput.value = "";
         setBtnToSave();
       }
     }
   });
-
-  noteInput.addEventListener("input", () => {
-    setBtnToSave();
-  });
+  
+  noteInput.addEventListener("input", () => setBtnToSave());
 
   card.appendChild(noteLabel);
   card.appendChild(noteInput);
   card.appendChild(noteBtn);
-};
+}
 
 renderFavMovies();

@@ -1,0 +1,11 @@
+{
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.7",
+    "parcel": "^2.15.1",
+    "tailwindcss": "^4.1.7"
+  },
+  "scripts": {
+    "dev": "parcel index.html",
+    "build": "parcel build index.html journal.html"
+  }
+}
