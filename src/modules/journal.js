@@ -4,14 +4,14 @@ function renderFavMovies() {
   const favMoviesElement = document.getElementById("favMovies");
   favMoviesElement.innerHTML = "";
 
-  favMovies.forEach((movie) => {
-    if (!movie) {
-      console.warn("movie is missing");
-      return;
-    }
-    const movieCard = document.createElement("div");
-    movieCard.className = "bg-white rounded-lg shadow-md p-4";
-    movieCard.innerHTML = `
+  if (favMovies.length === 0) {
+    favMoviesElement.innerHTML = "<p>No movies found.</p>";
+    return;
+  } else {
+    favMovies.forEach((movie) => {
+      const movieCard = document.createElement("div");
+      movieCard.className = "bg-white rounded-lg shadow-md p-4";
+      movieCard.innerHTML = `
       <img class="w-full h-[300px] object-cover rounded" src="https://image.tmdb.org/t/p/w500/${
         movie.poster_path
       }" alt="${movie.title}" />
@@ -19,11 +19,11 @@ function renderFavMovies() {
       <p class="text-gray-500 text-md">${movie.overview.substring(0, 100)}..</p>
     `;
 
-    addNotesToCard(movieCard, movie);
-    favMoviesElement.appendChild(movieCard);
-  });
+      addNotesToCard(movieCard, movie);
+      favMoviesElement.appendChild(movieCard);
+    });
+  }
 }
-
 function addNotesToCard(card, movie) {
   const noteLabel = document.createElement("p");
   noteLabel.textContent = "Personal Note:";
