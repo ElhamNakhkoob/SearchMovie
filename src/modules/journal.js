@@ -5,10 +5,16 @@ function renderFavMovies() {
   favMoviesElement.innerHTML = "";
 
   favMovies.forEach((movie) => {
+    if (!movie) {
+      console.warn("movie is missing");
+      return;
+    }
     const movieCard = document.createElement("div");
     movieCard.className = "bg-white rounded-lg shadow-md p-4";
     movieCard.innerHTML = `
-      <img class="w-full h-[300px] object-cover rounded" src="https://image.tmdb.org/t/p/w500/${movie.poster_path}" alt="${movie.title}" />
+      <img class="w-full h-[300px] object-cover rounded" src="https://image.tmdb.org/t/p/w500/${
+        movie.poster_path
+      }" alt="${movie.title}" />
       <h2 class="mt-2 text-lg font-semibold">${movie.title}</h2>
       <p class="text-gray-500 text-md">${movie.overview.substring(0, 100)}..</p>
     `;
@@ -57,6 +63,11 @@ function addNotesToCard(card, movie) {
 
     if (noteText === "") return;
 
+    if (noteText.length > 500) {
+      alert("Note is too long (max 500 characters).");
+      return;
+    }
+
     const action = noteBtn.getAttribute("data-action");
     const updatedNotes = [...favMovies];
 
@@ -77,7 +88,7 @@ function addNotesToCard(card, movie) {
       }
     }
   });
-  
+
   noteInput.addEventListener("input", () => setBtnToSave());
 
   card.appendChild(noteLabel);

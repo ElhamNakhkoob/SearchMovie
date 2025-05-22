@@ -2,7 +2,11 @@
 export let favMovies = JSON.parse(localStorage.getItem("favMoviesList")) || [];
 
 export function saveToStorage(movies) {
-  localStorage.setItem("favMoviesList", JSON.stringify(movies));
+  try {
+    localStorage.setItem("favMoviesList", JSON.stringify(movies));
+  } catch (error) {
+    console.error("Error while saving to localStorage", error);
+  }
 }
 
 export function addToFavorite(movie) {
