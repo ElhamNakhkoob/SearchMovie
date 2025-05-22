@@ -40,6 +40,11 @@ function renderMovies(movies) {
   const movieList = document.getElementById("movieList");
   movieList.innerHTML = "";
 
+  if (movies.length === 0) {
+    movieList.innerHTML = "<p>No movies found.</p>";
+    return;
+  }
+
   movies.forEach((movie) => {
     const movieCard = document.createElement("div");
     movieCard.className = "bg-white rounded-lg shadow-md p-4";
