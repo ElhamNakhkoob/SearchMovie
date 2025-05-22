@@ -18,7 +18,6 @@ async function fetchMovies() {
     setupSearch(data.results);
   } catch (error) {
     console.error("Error fetching popular movies:", error);
-    alert("Please try again later.");
   }
 }
 
