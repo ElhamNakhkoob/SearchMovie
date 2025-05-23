@@ -1,11 +1,22 @@
 // src/modules/main.js
+
 import { addToFavorite } from "./storage.js";
 
+/**
+ * Fetches popular movies from The Movie Database (TMDb) API.
+ * Handles API errors and renders the movies on success.
+ * Also sets up the search functionality.
+ *
+ * @async
+ * @function
+ * @returns {Promise<void>}
+ */
 async function fetchMovies() {
   const apiUrl =
     "https://api.themoviedb.org/3/movie/popular?api_key=d4f9e0502356d1d0ce1ae299c5217299";
 
   try {
+    // Fetch data from the TMDb API
     const response = await fetch(apiUrl);
     if (!response.ok) {
       alert(
@@ -13,20 +24,29 @@ async function fetchMovies() {
       );
       throw new Error(`Something went wrong, status: ${response.status}`);
     }
+    // Parse the JSON response
     const data = await response.json();
+    // Render the list of movies
     renderMovies(data.results);
+    // Enable search functionality
     setupSearch(data.results);
   } catch (error) {
     console.error("Error fetching popular movies:", error);
   }
 }
 
+/**
+ * Sets up the search input to filter movies by title.
+ *
+ * @param {Array<Object>} movies - The array of movie objects to search within.
+ */
 function setupSearch(movies) {
   if (!movies) {
     console.warn("movie is missing");
     return;
   }
   const searchInput = document.getElementById("searchInput");
+  // Listen for input changes and filter movies accordingly
   searchInput.addEventListener("input", (event) => {
     const searchTerm = event.target.value.toLowerCase();
     const filteredMovies = movies.filter((movie) =>
@@ -36,6 +56,12 @@ function setupSearch(movies) {
   });
 }
 
+/**
+ * Renders a list of movie cards to the DOM.
+ * Each card includes a poster, title, overview, and "Add to Favorites" button.
+ *
+ * @param {Array<Object>} movies - The array of movie objects to render.
+ */
 function renderMovies(movies) {
   const movieList = document.getElementById("movieList");
   movieList.innerHTML = "";
@@ -62,6 +88,7 @@ function renderMovies(movies) {
       </button>
     `;
 
+    // Add event listener to the "Add to Favorites" button
     const favButton = movieCard.querySelector(".add-fav-btn");
     favButton.addEventListener("click", () => addToFavorite(movie));
 
@@ -69,4 +96,5 @@ function renderMovies(movies) {
   });
 }
 
+// Initialize the app by fetching and displaying movies
 fetchMovies();
